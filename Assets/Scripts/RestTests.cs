@@ -48,9 +48,11 @@ public class RestTests : MonoBehaviour
     private async void ConnectToWS()
     {
         Debug.Log("application us running");
-        
-        websocket = new WebSocket($"ws://{_target.Ip}:{_target.Port}/ws");
 
+        string Targeturl = $"ws://{_target.Ip}:{_target.Port}/ws";
+
+        websocket = new WebSocket(Targeturl);
+        
         websocket.OnOpen += () =>
         {
             Debug.Log("Connection open!");
@@ -60,8 +62,10 @@ public class RestTests : MonoBehaviour
 
         websocket.OnError += async (e) =>
         {
+            if (websocket.State != WebSocketState.Open) return;
             Debug.Log("Error! " + e);
             _connectionIndicator.color = Color.red;
+            Alert.OnShowAlert?.Invoke($"Disconnected or some error to {Targeturl}");
             await websocket.Connect();
         };
 
