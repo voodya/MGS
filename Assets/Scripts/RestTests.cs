@@ -111,7 +111,7 @@ public class RestTests : MonoBehaviour
     void Update()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
-        websocket.DispatchMessageQueue();
+        websocket?.DispatchMessageQueue();
 #endif
     }
 
